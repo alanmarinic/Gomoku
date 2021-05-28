@@ -9,7 +9,7 @@ public class Koordinati {
 		this.y = y;
 	}
 
-	public int getX() { 
+	public int getX() {
 		return x; 
 	}
 

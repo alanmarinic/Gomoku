@@ -16,4 +16,5 @@ public class OcenjenaPoteza {
 		else if (this.ocena > op.ocena) return 1;
 		else return 0;
 	}
+	
 }

@@ -17,9 +17,8 @@ public class OceniPozicijo {
 		for (Vrsta v : Igra.VRSTE) {
 			ocena = ocena + oceniVrsto(v, igra, jaz);
 		}
-		if (three_counter > 1) {ocena += 19;}
-		else if (three_counter > 0 && four_counter > 0)
-		{ocena += 19;}
+		if (three_counter > 1) {ocena += 50;}
+		else if (three_counter > 0 && four_counter > 0) {ocena += 50;}
 		return ocena;	
 	}
 	
@@ -39,19 +38,6 @@ public class OceniPozicijo {
 		else { return count_Bela - count_Crna; }
 	}
 
-//	public static int oceniPozicijo2 (Igra igra, Igralec jaz) {
-//		int ocena = 0;
-//		int four_counter = 0;
-//		int three_counter = 0;
-//		 - - _ - - -       _ - - - _ - - - _ 
-//		blokada ++++++++++++++++
-//		else if (ti imas 4 pa na obeh straneh nic) {kr kul 4500} +++++++++++++++++++++++++++++
-//		else if (ti mas 4 pa sam  ene strani frej) // za zdej ma oceno 4 po standardnem minimax +++++
-//		else if (3 pa z obeh nic) {isto k ena gor} // skor, 1 mnj bo, kr 3 rzen ce bo preslab komp +++++
-//		else if (2x (3 pa z obeh nic)) {4500} ++++++
-//		else if (2x (4)) {4500}
-//		
-//	}
 	public static int oceniVrsto ( Vrsta v, Igra igra, Igralec jaz) {
 		Polje[][] plosca = igra.getPlosca();
 		int countBela = 0;
@@ -63,43 +49,51 @@ public class OceniPozicijo {
 			case PRAZNO: break;
 			}
 		}
-		// 4 nasprotnik moras blokerat
-		if (jaz == Igralec.Crna && countBela == 4 && countCrna == 1) {return 100;}
-		else if (jaz == Igralec.Bela && countCrna == 4 && countBela == 1) {return 100;}
 		
-		//else if (jaz == Igralec.Crna && countCrna == 4 && countBela == 0 && plosca[v.x[k] + 1][v.y[k + 1]] == null) {}
+		// 4 nasprotnik moras blokerat
+		if (jaz == Igralec.Crna && countBela == 4 && countCrna == 1) {return 100000;}
+		else if (jaz == Igralec.Bela && countCrna == 4 && countBela == 1) {return 100000;}
+		
+		// _ O O O O
 		else if (jaz == Igralec.Crna && countCrna == 4 && plosca[v.x[0]][v.y[0]] == null) {
 			int xSmer = v.x[1] - v.x[0];
 			int ySmer = v.y[1] - v.y[0];
-			// ce && gleda povrsti je kul?
-			if (v.x[4] + xSmer <= Igra.N && v.y[4] + 1 <= Igra.N && plosca[v.x[4] + xSmer][v.y[4] + ySmer] == null) {return 20;}
+			// _ O O O O _
+			if (v.x[4] + xSmer <= Igra.N && v.y[4] + ySmer <= Igra.N && plosca[v.x[4] + xSmer][v.y[4] + ySmer] == null) {return 300;}
 			// lahko 4 naenkrat take vrste dobi, zato more bit 4x manj od blokadne poteze
-			return 4;
+			return 75;
 		}
+		// Isto kot prejsnja samo za bele
 		else if (jaz == Igralec.Bela && countBela == 4 && plosca[v.x[0]][v.y[0]] == null) {
 			int xSmer = v.x[1] - v.x[0];
 			int ySmer = v.y[1] - v.y[0];
 			// ce && gleda povrsti je kul?
-			if (v.x[4] + xSmer <= Igra.N && v.y[4] + 1 <= Igra.N && plosca[v.x[4] + xSmer][v.y[4] + ySmer] == null) {return 20;}
+			if (v.x[4] + xSmer <= Igra.N && v.y[4] + 1 <= Igra.N && plosca[v.x[4] + xSmer][v.y[4] + ySmer] == null) {return 300;}
 			// lahko 4 naenkrat take vrste dobi, zato more bit 4x manj od blokadne poteze
-			return 4;
+			return 75;
 		}
 		else if (jaz == Igralec.Crna && countCrna == 3 && plosca[v.x[0]][v.y[0]] == null && (plosca[v.x[1]][v.y[1]] == null || plosca[v.x[4]][v.y[4]] == null)) {
 			int xSmer = v.x[1] - v.x[0];
 			int ySmer = v.y[1] - v.y[0];
-			if (v.x[4] + xSmer <= Igra.N && v.y[4] + 1 <= Igra.N && plosca[v.x[4] + xSmer][v.y[4] + ySmer] == null) {three_counter += 1; return 3;}
-			return 3;
+			if (v.x[4] + xSmer <= Igra.N && v.y[4] + ySmer <= Igra.N && plosca[v.x[4] + xSmer][v.y[4] + ySmer] == null) {three_counter += 1; return 150;}
+			return 50;
 		}
 		
 		else if (jaz == Igralec.Bela && countBela == 3 && plosca[v.x[0]][v.y[0]] == null && (plosca[v.x[1]][v.y[1]] == null || plosca[v.x[4]][v.y[4]] == null)) {
 			int xSmer = v.x[1] - v.x[0];
 			int ySmer = v.y[1] - v.y[0];
-			if (v.x[4] + xSmer <= Igra.N && v.y[4] + 1 <= Igra.N && plosca[v.x[4] + xSmer][v.y[4] + ySmer] == null) {three_counter += 1; return 3;}
-			return 3;
+			if (v.x[4] + xSmer <= Igra.N && v.y[4] + 1 <= Igra.N && plosca[v.x[4] + xSmer][v.y[4] + ySmer] == null) {three_counter += 1; return 150;}
+			return 50;
 		}
 		
-		else if (jaz == Igralec.Crna && countCrna == 4 && countBela == 0) {four_counter += 1; return 4;}
-		else if (jaz == Igralec.Bela && countBela == 4 && countCrna == 0) {four_counter += 1; return 4;}
+		else if (jaz == Igralec.Crna && countCrna == 4 && countBela == 0) {four_counter += 1; return 40;}
+		else if (jaz == Igralec.Bela && countBela == 4 && countCrna == 0) {four_counter += 1; return 40;}
+		
+		else if (jaz == Igralec.Crna && countCrna == 1 && countBela >= 3) {return 50;}
+		else if (jaz == Igralec.Crna && countCrna == 1 && countBela >= 2) {return 25;}
+		
+		else if (jaz == Igralec.Bela && countCrna >= 3 && countBela == 1) {return 50;}
+		else if (jaz == Igralec.Bela && countCrna >= 2 && countBela == 1) {return 25;}
 		
 		else if (countCrna > 0 && countBela > 0) {return 0;}
 		else if (jaz == Igralec.Crna) { return countCrna - countBela; }

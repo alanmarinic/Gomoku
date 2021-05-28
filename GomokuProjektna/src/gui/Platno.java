@@ -24,7 +24,8 @@ import splosno.Vodja;;
 @SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener {
 	
-	Image img = Toolkit.getDefaultToolkit().getImage("/Users/alanmarinic/eclipse-workspace/GomokuProjektna/Ozadje.jpeg");
+	// Slika ozadje
+	//Image img = Toolkit.getDefaultToolkit().getImage("/Users/alanmarinic/eclipse-workspace/GomokuProjektna/Ozadje.jpeg");
 	
 	public Platno() {
 		setBackground(Color.PINK);

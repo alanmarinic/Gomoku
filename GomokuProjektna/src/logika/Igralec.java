@@ -12,6 +12,11 @@ public enum Igralec {
 	 public Polje getPolje() {
 		 return (this == Bela ? Polje.Bela : Polje.Crna);
 	 }
+	 
+	 @Override
+	 public String toString() {
+		 return (this == Bela ? "Bela" : "Crna");
+	 }
 
 }
 

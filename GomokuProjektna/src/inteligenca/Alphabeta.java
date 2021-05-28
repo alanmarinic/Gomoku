@@ -8,7 +8,7 @@ import splosno.Koordinati;
 
 public class Alphabeta extends Inteligenca {
 	
-	private static final int ZMAGA = 100; // vrednost zmage
+	private static final int ZMAGA = Integer.MAX_VALUE; // vrednost zmage
 	private static final int ZGUBA = -ZMAGA;  // vrednost izgube
 	private static final int NEODLOC = 0;  // vrednost neodločene igre	
 	
@@ -27,8 +27,7 @@ public class Alphabeta extends Inteligenca {
 	
 	public static OcenjenaPoteza alphabetaPoteze(Igra igra, int globina, int alpha, int beta, Igralec jaz) {
 		int ocena;
-		// Če sem računalnik, maksimiramo oceno z začetno oceno ZGUBA
-		// Če sem pa človek, minimiziramo oceno z začetno oceno ZMAGA
+
 		if (igra.naPotezi() == jaz) {ocena = ZGUBA;} else {ocena = ZMAGA;}
 		List<Koordinati> moznePoteze = igra.poteze();
 		Koordinati kandidat = moznePoteze.get(0); // Možno je, da se ne spremini vrednost kanditata. Zato ne more biti null.

@@ -200,7 +200,7 @@ public class Okno extends JFrame implements ActionListener {
 			osveziGUI();// osvezi GUI rabmo?
 		}
 		else if (e.getSource() == alfabeta) {
-			Vodja.racunalnikovaInteligenca = new Alphabeta(5);
+			Vodja.racunalnikovaInteligenca = new Alphabeta(2);
 			osveziGUI();
 		}
 		else if (e.getSource() == hitro) {
