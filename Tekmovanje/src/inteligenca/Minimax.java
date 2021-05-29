@@ -62,7 +62,7 @@ public class Minimax extends Inteligenca {
 	
 	private static final Random RANDOM = new Random();
 	
-	private static final int ZMAGA = Integer.MAX_VALUE-1000000; // vrednost zmage, več kot vsaka druga ocena pozicije
+	private static final int ZMAGA = Integer.MAX_VALUE; // vrednost zmage, več kot vsaka druga ocena pozicije
 	private static final int NEODLOC = 0;  // vrednost neodločene igre	
 	
 	public Minimax () {
@@ -71,10 +71,12 @@ public class Minimax extends Inteligenca {
 	
 	@Override
 	public Koordinati izberiPotezo (Igra igra) {
-		List<OcenjenaPoteza> ocenjenePoteze = oceni(igra, 5);
+		List<OcenjenaPoteza> ocenjenePoteze = oceni(igra, 1);
 		System.out.println(ocenjenePoteze.size() + " potez z vrednostjo " + ocenjenePoteze.get(0).ocena);
 		int i = RANDOM.nextInt(ocenjenePoteze.size());	
-		return ocenjenePoteze.get(i).poteza;		
+		int prejsnjaOcena = ocenjenePoteze.get(i).ocena;
+		System.out.println(Integer.toString(meja));
+		return ocenjenePoteze.get(i).poteza;
 	}
 
 	// vrne seznam vseh potez, ki imajo največjo vrednost z vidike trenutnega igralca na potezi
@@ -100,8 +102,8 @@ public class Minimax extends Inteligenca {
 		return najboljsePoteze.list();
 	}
 	
+	static int meja = 90000;
 	
-
 	public static List<OcenjenaPoteza> oceni(Igra igra, int globina) {
 		NajboljseOcenjenePoteze najboljsePoteze = new NajboljseOcenjenePoteze();
 		NajboljseOcenjenePoteze najboljseTrenutne = new NajboljseOcenjenePoteze();
@@ -115,19 +117,23 @@ public class Minimax extends Inteligenca {
 			case ZMAGA_BELA: ocena = ZMAGA; break; // p je zmagovalna poteza
 			case NEODLOCENO: ocena = NEODLOC; break;
 			default:
-				ocena = OceniPozicijo.oceniPozicijo(tempIgra, igra.naPotezi());
+				ocena = OceniPozicijo.oceniPozicijo(tempIgra, igra.naPotezi());	
 			}
+			if (ocena >  meja) {najboljsePoteze.addIfBest(new OcenjenaPoteza(p, ocena));}
 			najboljseTrenutne.vstavi(new OcenjenaPoteza (p, ocena), globina);
 		}
-		//if (globina == 1) {najboljsePoteze = najboljseTrenutne;}
-		
+		if (najboljsePoteze.list().size() != 0) {
+			meja += 100000;
+			return najboljsePoteze.list(); }
+		if (globina == 1) {najboljsePoteze = najboljseTrenutne;}
+		else {
 			for (OcenjenaPoteza p: najboljseTrenutne.list()) {
 				NajboljseOcenjenePoteze sezOcen = new NajboljseOcenjenePoteze();
 				Igra tempIgra = new Igra(igra); 
-					tempIgra.odigraj(p.poteza);
-					sezOcen = najboljsePoteze3(tempIgra,globina-1, igra.naPotezi());
-					najboljsePoteze.addIfBest(new OcenjenaPoteza(p.poteza, sezOcen.maxOcena()));
-		
+				tempIgra.odigraj(p.poteza);
+				sezOcen = najboljsePoteze3(tempIgra,globina-1, igra.naPotezi());
+				najboljsePoteze.addIfBest(new OcenjenaPoteza(p.poteza, sezOcen.maxOcena()));
+			}
 		}
 		return najboljsePoteze.list();
 	}

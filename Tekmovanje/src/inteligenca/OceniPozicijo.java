@@ -19,8 +19,10 @@ public class OceniPozicijo {
 		}
 		if (three_counter > 1) {ocena += 50;}
 		else if (three_counter > 0 && four_counter > 0) {ocena += 50;}
-		return ocena;	
+		return ocena;
 	}
+	
+	
 	
 	public static int oceniVrsto2 (Vrsta v, Igra igra, Igralec jaz) {
 		Polje[][] plosca = igra.getPlosca();
@@ -42,7 +44,7 @@ public class OceniPozicijo {
 		Polje[][] plosca = igra.getPlosca();
 		int countBela = 0;
 		int countCrna = 0;
-		for (int k = 0; k < Igra.Z && (countBela == 0 || countCrna == 0); k++) {
+		for (int k = 0; k < Igra.Z; k++) {
 			switch (plosca[v.x[k]][v.y[k]]) {
 			case Crna: countCrna += 1; break;
 			case Bela: countBela += 1; break;
@@ -99,6 +101,7 @@ public class OceniPozicijo {
 		else if (jaz == Igralec.Crna) { return countCrna - countBela; }
 		else { return countBela - countCrna; }
 	}
+
 }
 
 
