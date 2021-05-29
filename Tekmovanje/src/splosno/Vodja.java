@@ -1,49 +1,42 @@
 package splosno;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.EnumMap;
-import java.util.List;
+
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingWorker;
 
 import gui.Okno;
-import inteligenca.Alphabeta;
-import inteligenca.Inteligenca;
 import inteligenca.Minimax;
+//import inteligenca.Alphabeta;
+import inteligenca.Inteligenca;
 import logika.Igra;
 import logika.Igralec;
 import logika.VrstaIgralca;
 
 public class Vodja {
-
+	// Ustvarimo nove objekte, ki so potrebni za zagon programa
 	public static Map<Igralec, VrstaIgralca> vrstaIgralca;
 	public static Map<Igralec,KdoIgra> kdoIgra;
 	
 	public static Okno okno;
-
-	//private static BufferedReader r = new BufferedReader(new InputStreamReader(System.in));
-
+	
 	public static Igra igra = null;
-	
 	public static boolean clovekNaVrsti = false;
-	
 	public static int odzivnost = 1; 
 	
+	// Zažene novo igro
 	public static void igramoNovoIgro () {
 		igra = new Igra ();
 		igramo ();
 	}
 	
+	// Funkcija poganja in osvežuje igro, dokler se ta ne konča
 	public static void igramo () {
 		okno.osveziGUI();
 		switch (igra.stanje()) {
-		case ZMAGA_CRNA: System.out.println("jej"); break;
-		case ZMAGA_BELA: 
-		case NEODLOCENO: 
+		case ZMAGA_CRNA:
+		case ZMAGA_BELA:
+		case NEODLOCENO:
 			return; // odhajamo iz metode igramo
 		case V_TEKU: 
 			Igralec igralec = igra.naPotezi();
@@ -57,13 +50,16 @@ public class Vodja {
 				break;
 			}
 		}
-	}	
+	}
 
+	// Določi algoritem računalnika Minimax ali Alpabeta
 	public static Inteligenca racunalnikovaInteligenca = new Minimax();
 	
+	// Odigra računalnikovo potezo
 	public static void igrajRacunalnikovoPotezo() {
 		Igra zacetnaIgra = igra;
 		SwingWorker<Koordinati, Void> worker = new SwingWorker<Koordinati, Void> () {
+			// V ozadju izbere in odigra računalnikovo potezo
 			@Override
 			protected Koordinati doInBackground() {
 				Koordinati poteza = racunalnikovaInteligenca.izberiPotezo(igra);
@@ -81,9 +77,9 @@ public class Vodja {
 			}
 		};
 		worker.execute();
-		
 	}
 	
+	// Odigra človekovo potezo
 	public static void igrajClovekovoPotezo(Koordinati poteza) {
 		if (igra.odigraj(poteza)) clovekNaVrsti = false;
 		igramo ();

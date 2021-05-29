@@ -5,8 +5,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -18,28 +16,23 @@ import logika.Vrsta;
 import splosno.Koordinati;
 import splosno.Vodja;;
 
-/**
- * Pravokotno območje, v katerem je narisano igralno polje.
- */
+// Pripravi in nariše igralno polje
 @SuppressWarnings("serial")
 public class Platno extends JPanel implements MouseListener {
 	
-	// Slika ozadje
-	//Image img = Toolkit.getDefaultToolkit().getImage("/Users/alanmarinic/eclipse-workspace/GomokuProjektna/Ozadje.jpeg");
-	
 	public Platno() {
+		// Nastavi ozadje
 		setBackground(Color.PINK);
-
+		// Spremlja akcije miške
 		this.addMouseListener(this);
-		
 	}
 
+	// Nastavi začetne dimenzije platna 
 	@Override
 	public Dimension getPreferredSize() {
 		return new Dimension(400, 400);
 	}
 
-	
 	// Relativna širina črte
 	private final static double LINE_WIDTH = 0.05;
 	
@@ -48,52 +41,46 @@ public class Platno extends JPanel implements MouseListener {
 		return Math.min(getWidth(), getHeight()) / Igra.N;
 	}
 	
-	// Relativni prostor okoli X in O
+	// Relativni prostor okoli krožcev
 	private final static double PADDING = 0.18;
 	
-	/**
-	 * V grafični kontekst g2 nariši križec v polje (i,j)
-	 * 
-	 * @param g2
-	 * @param i
-	 * @param j
-	 */
+	// Nariše bel krogec v določeno polje na platnu
 	private void paintBela(Graphics2D g2, int i, int j) {
 		double w = squareWidth();
-		double d = w * (1.0 - LINE_WIDTH - 2.0 * PADDING); // premer O
+		// Premer krogca
+		double d = w * (1.0 - LINE_WIDTH - 2.0 * PADDING);
 		double x = w * (i + 0.5 * LINE_WIDTH + PADDING);
 		double y = w * (j + 0.5 * LINE_WIDTH + PADDING);
+		// Barva krogca
 		g2.setColor(Color.WHITE);
 		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
+		// Nariše krogec
 		g2.drawOval((int)x, (int)y, (int)d , (int)d);
 	}
 	
-	/**
-	 * V grafični kontekst {@g2} nariši križec v polje {@(i,j)}
-	 * @param g2
-	 * @param i
-	 * @param j
-	 */
+	// Nariše črn krogec v določeno polje na platnu
 	private void paintCrna(Graphics2D g2, int i, int j) {
 		double w = squareWidth();
-		double d = w * (1.0 - LINE_WIDTH - 2.0 * PADDING); // premer O
+		// Premer krogca
+		double d = w * (1.0 - LINE_WIDTH - 2.0 * PADDING);
 		double x = w * (i + 0.5 * LINE_WIDTH + PADDING);
 		double y = w * (j + 0.5 * LINE_WIDTH + PADDING);
+		// Barva krogca
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
+		// Nariše krogec
 		g2.drawOval((int)x, (int)y, (int)d , (int)d);
 	}
-	
+
+	// Nariše igralno ploščo
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		//g.drawImage(img, 0, 0, null);
 		Graphics2D g2 = (Graphics2D)g;
-		
 		
 		double w = squareWidth();
 
-		// če imamo zmagovalno terico, njeno ozadje pobarvamo
+		// Če imamo zmagovalno 5-terico, njeno ozadje pobarvamo
 		Vrsta t = null;
 		if (Vodja.igra != null) {t = Vodja.igra.zmagovalnaVrsta();}
 		if (t != null) {
@@ -105,19 +92,23 @@ public class Platno extends JPanel implements MouseListener {
 			}
 		}
 		
-		// črte
+		// Narišemo črte med posameznimi polji
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
 		for (int i = 1; i < Igra.N; i++) {
-			// Navpicne
-			g2.drawLine((int)(i * w), (int)(0), // X, Y prve tocke
-					    (int)(i * w), (int)(Igra.N * w)); // X, Y druge tocke
-			// Vodoravne
+			// Navpične črte
+				// (x, y) prve točke daljice
+			g2.drawLine((int)(i * w), (int)(0), 
+				// (x, y) zadnje točke daljice
+						(int)(i * w), (int)(Igra.N * w));
+			// Vodoravne črte
+				// (x, y) prve točke daljice
 			g2.drawLine((int)(0), (int)(i * w),
+				// (x, y) druge točke daljice
 						(int)(Igra.N * w), (int)(i * w));
 		}
 		
-		// križci in krožci
+		// Nariše krogce na igralno polje
 		Polje[][] plosca;;
 		if (Vodja.igra != null) {
 			plosca = Vodja.igra.getPlosca();
@@ -131,9 +122,9 @@ public class Platno extends JPanel implements MouseListener {
 				}
 			}
 		}	
-		
 	}
 	
+	// Odziv ob kliku z miško - odigra človekovo potezo
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (Vodja.clovekNaVrsti) {
@@ -144,30 +135,22 @@ public class Platno extends JPanel implements MouseListener {
 			double di = (x % w) / squareWidth() ;
 			int j = y / w ;
 			double dj = (y % w) / squareWidth() ;
-			if (0 <= i && i < Igra.N &&
-					0.5 * LINE_WIDTH < di && di < 1.0 - 0.5 * LINE_WIDTH &&
-					0 <= j && j < Igra.N && 
-					0.5 * LINE_WIDTH < dj && dj < 1.0 - 0.5 * LINE_WIDTH) {
+			if (0 <= i && i < Igra.N && 0.5 * LINE_WIDTH < di && di < 1.0 - 0.5 * LINE_WIDTH &&
+				0 <= j && j < Igra.N && 0.5 * LINE_WIDTH < dj && dj < 1.0 - 0.5 * LINE_WIDTH) {
 				Vodja.igrajClovekovoPotezo (new Koordinati(i, j));
 			}
-		
 		}
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {		
-	}
+	public void mousePressed(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {		
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {		
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {		
-	}
-	
+	public void mouseExited(MouseEvent e) {}
 }

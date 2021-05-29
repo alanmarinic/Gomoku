@@ -6,22 +6,20 @@ import java.util.List;
 import splosno.Koordinati;
 
 public class Igra {
-
-	
-	// Velikost igralne pološče je N x N.
+	// Velikost igralne pološče je N x N
 	public static int N = 15;
+	// Velikost zmagovalne vrste je Z x Z
 	public static final int Z = 5;
-	
-	// Pomožen seznam vseh vrstah na plošči.
+
+	// Pomožen seznam vseh vrst na plošči.
 	public static final List<Vrsta> VRSTE = new LinkedList<Vrsta>();
 
+	// Izvede na začetku, ko se prvič požene program
+	// Inicializira vrednosti statičnih spremenljivk
 	static {
-		// Ta koda se izvede na začetku, ko se prvič požene program.
-		// Njena naloga je, da inicializira vrednosti statičnih
-		// spremenljivk.
-		
-		// Iniciraliziramo N-vrste
+		// Definiramo smeri
 		int[][] smer = {{1,0}, {0,1}, {1,1}, {1,-1}};
+		
 		for (int x = 0; x < N; x++) {
 			for (int y = 0; y < N; y++) {
 				for (int[] s : smer) {
@@ -46,15 +44,11 @@ public class Igra {
 	// Igralno polje
 	public Polje[][] plosca;
 	
-		
-	// Igralec, ki je trenutno na potezi.
-	// Vrednost je poljubna, če je igre konec (se pravi, lahko je napačna).
+	// Igralec, ki je trenutno na potezi
+	// Vrednost je poljubna, če je igre konec
 	public Igralec naPotezi;
 
-
-	/**
-	 * Nova igra, v začetni poziciji je prazna in na potezi je Bela.
-	 */
+	// Nova igra, v začetni poziciji je prazna in na potezi je Bela
 	public Igra() {
 		plosca = new Polje[N][N];
 		for (int i = 0; i < N; i++) {
@@ -65,6 +59,7 @@ public class Igra {
 		naPotezi = Igralec.Bela;
 	}
 	
+	// Nova igra, ki se ne začne na prazni plošči
 	public Igra(Igra igra) {
 		this.plosca = new Polje[N][N];
 		for (int i = 0; i < N; i++) {
@@ -75,17 +70,17 @@ public class Igra {
 		this.naPotezi = igra.naPotezi;
 	}
 
-	
+	// Vrne igralno ploščo
 	public Polje[][] getPlosca () {
 		return plosca;
 	}
 	
+	// Vrne igralca na potezi
 	public Igralec naPotezi() {
 		return naPotezi;
 	}
-	/**
-	 * @return seznam možnih potez
-	 */
+
+	// Vrne seznam možnih potez
 	public List<Koordinati> poteze() {
 		LinkedList<Koordinati> ps = new LinkedList<Koordinati>();
 		for (int i = 0; i < N; i++) {
@@ -98,10 +93,7 @@ public class Igra {
 		return ps;
 	}
 
-	/**
-	 * @param t
-	 * @return igralec, ki ima zapolnjeno vrsto @{t}, ali {@null}, če nihče
-	 */
+	// Vrne igralca, ki ima zapolnjeno vrsto t, ali null, če ga ni
 	private Igralec cigavaVrsta(Vrsta t) {
 		int count_Crna = 0;
 		int count_Bela = 0;
@@ -112,14 +104,12 @@ public class Igra {
 			case PRAZNO: break;
 			}
 		}
-		if (count_Bela == Z) { return Igralec.Bela; }
-		else if (count_Crna == Z) { return Igralec.Crna; }
-		else { return null; }
+		if (count_Bela == Z) {return Igralec.Bela;}
+		else if (count_Crna == Z) {return Igralec.Crna;}
+		else {return null;}
 	}
 
-	/**
-	 * @return zmagovalna vrsta, ali {@null}, če je ni
-	 */
+	// Vrne zmagovalno vrsto, ali null, če je ni
 	public Vrsta zmagovalnaVrsta() {
 		for (Vrsta t : VRSTE) {
 			Igralec lastnik = cigavaVrsta(t);
@@ -128,9 +118,7 @@ public class Igra {
 		return null;
 	}
 	
-	/**
-	 * @return trenutno stanje igre
-	 */
+	// Vrne trenutno stanje igre
 	public Stanje stanje() {
 		// Ali imamo zmagovalca?
 		Vrsta t = zmagovalnaVrsta();
@@ -152,20 +140,14 @@ public class Igra {
 		return Stanje.NEODLOCENO;
 	}
 
-	/**
-	 * Odigraj potezo p.
-	 * 
-	 * @param p
-	 * @return true, če je bila poteza uspešno odigrana
-	 */
+	// Odigra potezo p
 	public boolean odigraj(Koordinati p) {
 		if (plosca[p.getX()][p.getY()] == Polje.PRAZNO) {
 			plosca[p.getX()][p.getY()] = naPotezi.getPolje();
 			naPotezi = naPotezi.nasprotnik();
+			// Return true, če je bila poteza uspešno odigrana
 			return true;
 		}
-		else {
-			return false;
-		}
+		else {return false;}
 	}
 }

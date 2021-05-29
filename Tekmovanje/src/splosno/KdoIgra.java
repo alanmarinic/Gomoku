@@ -1,7 +1,8 @@
 package splosno;
 
+// Razred definira igralca
 public class KdoIgra {
-	
+	// Igralcu definiramo ime
 	protected String ime;
 	
 	public KdoIgra(String ime) {

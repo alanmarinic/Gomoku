@@ -2,14 +2,10 @@ package logika;
 
 import java.util.Arrays;
 
-public class Vrsta {
-
-/**
- * Objekt, ki predstavlja eno vrsto na plošči.
-	// Vrsta na plošči je predstavljena z dvema tabelama doložine 3.
-	//
-	 *  To sta tabeli x in y koordinat.
-	 */
+// Objekt, ki predstavlja eno vrsto na plošči.
+// Vrsta na plošči je predstavljena z dvema tabelama doložine 5.
+public class Vrsta {	
+	// To sta tabeli x in y koordinat.
 	public int[] x;
 	public int[] y;
 	

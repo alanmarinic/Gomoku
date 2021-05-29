@@ -1,6 +1,8 @@
 package splosno;
 
+// Razred definira poteze
 public class Koordinati {
+	// Definiramo x in y komponenti koorinat
 	private int x;
 	private int y;
 	
@@ -9,19 +11,23 @@ public class Koordinati {
 		this.y = y;
 	}
 
+	// Dobi x-koordinato poteze
 	public int getX() {
 		return x; 
 	}
 
+	// Dobi y-koordinato poteze
 	public int getY() {
 		return y;
 	}
 
+	// Izpiše koordinate
 	@Override
 	public String toString() {
 		return "Koordinati [x=" + x + ", y=" + y + "]";
 	}
 	
+	// Preveri ali imata potezi enake koordinate
 	@Override 
 	public boolean equals(Object o) {
 		if (this == o) return true;
