@@ -52,10 +52,12 @@ public class Platno extends JPanel implements MouseListener {
 		double x = w * (i + 0.5 * LINE_WIDTH + PADDING);
 		double y = w * (j + 0.5 * LINE_WIDTH + PADDING);
 		// Barva krogca
-		g2.setColor(Color.WHITE);
+		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
 		// Nariše krogec
 		g2.drawOval((int)x, (int)y, (int)d , (int)d);
+		g2.setColor(Color.WHITE);
+		g2.fillOval((int)x, (int)y, (int)d , (int)d);
 	}
 	
 	// Nariše črn krogec v določeno polje na platnu
@@ -69,7 +71,7 @@ public class Platno extends JPanel implements MouseListener {
 		g2.setColor(Color.BLACK);
 		g2.setStroke(new BasicStroke((float) (w * LINE_WIDTH)));
 		// Nariše krogec
-		g2.drawOval((int)x, (int)y, (int)d , (int)d);
+		g2.fillOval((int)x, (int)y, (int)d , (int)d);
 	}
 
 	// Nariše igralno ploščo
